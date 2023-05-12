@@ -9,20 +9,23 @@ if (isset($_POST["usuario"]) || isset($_POST['senha'])) { //verifica se existe
     } else if (strlen($_POST['senha'])  == 0) { //verifica se o tamanho da senha é igual a 0
         echo "Preencha sua senha";
     } else {
+        //mantem a segurança para q caracteres especiais não interfiram
         $email = $mysqli->real_escape_string($_POST["usuario"]);
         $senha = $mysqli->real_escape_string($_POST['senha']);
 
+
+        //codigo para consultar a tabela do banco de dados, onde a pesquisa é feita a partir do que foi digitado no formulario
         $sql_code = "SELECT * from usuarios where usuario = '$email' and senha = '$senha'";
         $sql_query = $mysqli->query($sql_code) or die("Falha na execução do codigo SQL:" . $my->error);
 
-        $quantidade = $sql_query->num_rows;
+        $quantidade = $sql_query->num_rows; //recebe o numero de linhas
 
         if ($quantidade == 1) {
             $usuario = $sql_query->fetch_assoc();
-            if (!isset($_SESSION)) {
+            if (!isset($_SESSION)) {//verifica se a sessão não existe, se não existir a sessão é criada
                 session_start();
             }
-            $_SESSION['usuario'] = $usuario['usuario'];
+            $_SESSION['usuario'] = $usuario['usuario'];//caso usuario e senha estajão corretos o acesso para o perfil é liberado
             header("Location: perfil.php");
         } else {
             echo "Falha ao logar email ou senha incorretos";

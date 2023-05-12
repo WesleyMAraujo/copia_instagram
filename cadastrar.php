@@ -9,13 +9,15 @@ if (isset($_POST["cad-usuario"]) || isset($_POST['cad-senha'])) { //verifica se 
     } else if (strlen($_POST['cad-senha'])  == 0) { //verifica se o tamanho da senha é igual a 0
         echo "Preencha sua senha";
     } else {
+
+        //mantem a segurança para q caracteres especiais não interfiram
         $usuario = $mysqli->real_escape_string($_POST["cad-usuario"]);
         $senha = $mysqli->real_escape_string($_POST['cad-senha']);
 
-        $mysqli->query("INSERT INTO usuarios(usuario, senha) VALUES('$usuario' ,'$senha')");
+        $mysqli->query("INSERT INTO usuarios(usuario, senha) VALUES('$usuario' ,'$senha')");//insere o novo usuario e a nova senha na tabela
         echo "Cadastro efetuado com sucesso:<a href=\"login.php\">Fazer Login</a>";
 
-        header("Locale: login.php");
+        header("Locale: login.php");//volta para a pagina de login
     }
         
 }
